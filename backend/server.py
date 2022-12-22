@@ -4,4 +4,4 @@ app = Flask(__name__)
 
 @app.route('/')
 def root():
-  return jsonify({'test': 'success!'})
+  return jsonify({'flask-running': True})

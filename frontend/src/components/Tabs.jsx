@@ -5,7 +5,7 @@ const Tab = ({ title, description, isActive, children }) => (
     <h1 className='font-semibold text-2xl'>{title}</h1>
     <p className='text-lg font-light mt-4'>{description}</p>
     <h1 className='font-semibold text-2xl my-12'>Test It Yourself!</h1>
-    <div className='w-1/2 bg-white m-auto p-10 rounded-2xl drop-shadow-md'>
+    <div className='w-1/2 bg-white m-auto p-10 rounded-2xl drop-shadow-md text-lg'>
       {children}
     </div>
   </div>
@@ -13,7 +13,7 @@ const Tab = ({ title, description, isActive, children }) => (
 
 function Tabs({ activeTab, setActiveTab, children }) {
   return (
-    <div className='h-screen w-[calc(100%-288px)] px-24 py-28'>
+    <div className='h-screen w-[calc(100%-288px)] px-24 py-14'>
       {children}
     </div>
   )

@@ -11,7 +11,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 def root():
   return jsonify({'flask-running': True})
 
-@app.route('/sent-anal', methods = ['GET'])
+@app.route('/sent-anal', methods = ['POST'])
 def text_classify():
   data = request.json
   preds = analyse(data['text'])

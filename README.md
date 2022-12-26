@@ -30,5 +30,5 @@ For development, use the debug option as follows;
 
 ## Issues
 
-[ ] Token classification (backend) $\rightarrow$ Mutliple sentences
-[ ] Sentiment Analysis (frontend) $\rightarrow$ State `data` making issues when switching to Sentiment Analysis tab
+- [ ] Token classification (backend) $\rightarrow$ Mutliple sentences
+- [ ] Sentiment Analysis (frontend) $\rightarrow$ State `data` making issues when switching to Sentiment Analysis tab

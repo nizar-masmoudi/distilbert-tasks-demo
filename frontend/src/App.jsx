@@ -62,6 +62,7 @@ function App() {
 
   const analyseSent = (e) => {
     e.preventDefault()
+    setData(null)
     const url = new URL('sent-anal', process.env.REACT_APP_API_URL).toString()
     setLoading(true)
     fetch(url, {
@@ -76,6 +77,7 @@ function App() {
 
   const classToken = (e) => {
     e.preventDefault()
+    setData(null)
     const url = new URL('token-class', process.env.REACT_APP_API_URL).toString()
     setLoading(true)
     fetch(url, {
@@ -83,9 +85,42 @@ function App() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: document.getElementById('token-class').value })
     })
-      .then((response) => response.json())
-      .then((results) => setData(results))
-      .then(() => setLoading(false))
+    .then((response) => response.json())
+    .then((results) => setData(results))
+    .then(() => setLoading(false))
+  }
+  
+  const fillMask = (e) => {
+    e.preventDefault()
+    setData(null)
+    const url = new URL('fill-mask', process.env.REACT_APP_API_URL).toString()
+    setLoading(true)
+    fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: document.getElementById('fill-mask').value })
+    })
+    .then((response) => response.json())
+    .then((results) => setData(results))
+    .then(() => setLoading(false))
+  }
+  
+  const answerQuestion = (e) => {
+    e.preventDefault()
+    setData(null)
+    const url = new URL('question-answering', process.env.REACT_APP_API_URL).toString()
+    setLoading(true)
+    fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        context: document.getElementById('qa-context').value, 
+        question: document.getElementById('qa-question').value, 
+      })
+    })
+    .then((response) => response.json())
+    .then((results) => setData(results))
+    .then(() => setLoading(false))
   }
 
   return (
@@ -156,14 +191,64 @@ function App() {
           title='Fill-Mask'
           description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ut mollis dolor, vitae hendrerit libero. Morbi leo metus, finibus vel convallis eu, faucibus ut ante. Aenean eu posuere orci. Phasellus viverra auctor enim, laoreet consequat ex ullamcorper non. Pellentesque pellentesque mi a enim euismod vulputate.'
         >
-          <p>form here...</p>
+          <form className='flex flex-col space-y-3' onSubmit={(e) => fillMask(e)}>
+            <label htmlFor='fill-mask' className='ml-6'>Masked Sentence</label>
+            <input id='fill-mask' type='text' placeholder='I feel [MASK] today!' required className='font-light border-[1px] rounded-full border-[#7370DA]/10 px-6 py-4 focus:outline-none focus-within:outline-none' />
+            <button type='submit' className='block w-28 h-10 bg-[#A9A7E2] text-white rounded-lg ml-auto mr-0'>
+              {loading ? 
+                <ArrowPathIcon className='m-auto w-5 stroke-white animate-spin' /> 
+              : 
+                'Compute'
+              }
+            </button>
+          </form>
+          {(data && activeTab === 3) &&
+            <span className='mt-6'>
+              <p className='ml-6'>Results</p>
+              <hr className='border-t-2 border-[#7370DA]/10 my-3' />
+              <span className='flex flex-wrap items-center w-full space-x-1.5 ml-6 font-light'>
+                {document.getElementById('fill-mask').value.split(' ').map((word) => (
+                  word !== '[MASK]' ? <p>{word}</p> : <p className='bg-green-300 px-2 py-1 rounded-lg'>{data.predictions[0]}</p>
+                ))}
+              </span>
+              <span className='flex flex-wrap items-center w-full space-x-1.5 ml-6 font-light my-2'>
+                {document.getElementById('fill-mask').value.split(' ').map((word) => (
+                  word !== '[MASK]' ? <p>{word}</p> : <p className='bg-blue-300 px-2 py-1 rounded-lg'>{data.predictions[1]}</p>
+                ))}
+              </span>
+              <span className='flex flex-wrap items-center w-full space-x-1.5 ml-6 font-light'>
+                {document.getElementById('fill-mask').value.split(' ').map((word) => (
+                  word !== '[MASK]' ? <p>{word}</p> : <p className='bg-orange-300 px-2 py-1 rounded-lg'>{data.predictions[2]}</p>
+                ))}
+              </span>
+            </span>
+          }
         </Tabs.Tab>
         <Tabs.Tab
           isActive={activeTab === 4}
           title='Question Answering'
           description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ut mollis dolor, vitae hendrerit libero. Morbi leo metus, finibus vel convallis eu, faucibus ut ante. Aenean eu posuere orci. Phasellus viverra auctor enim, laoreet consequat ex ullamcorper non. Pellentesque pellentesque mi a enim euismod vulputate.'
         >
-          <p>form here...</p>
+          <form className='flex flex-col space-y-3' onSubmit={(e) => answerQuestion(e)}>
+            <label htmlFor='qa-context' className='ml-6'>Context</label>
+            <textarea id='qa-context' type='text' placeholder='Context' required className='font-light border-[1px] rounded-2xl border-[#7370DA]/10 px-6 py-4 focus:outline-none focus-within:outline-none resize-none' />
+            <label htmlFor='qa-question' className='ml-6'>Question</label>
+            <input id='qa-question' type='text' placeholder='What is context?' required className='font-light border-[1px] rounded-full border-[#7370DA]/10 px-6 py-4 focus:outline-none focus-within:outline-none resize-none' />
+            <button type='submit' className='block w-28 h-10 bg-[#A9A7E2] text-white rounded-lg ml-auto mr-0'>
+              {loading ? 
+                <ArrowPathIcon className='m-auto w-5 stroke-white animate-spin' /> 
+              : 
+                'Compute'
+              }
+            </button>
+          </form>
+          {(data && activeTab === 4) &&
+            <span className='mt-6'>
+              <p className='ml-6'>Results</p>
+              <hr className='border-t-2 border-[#7370DA]/10 my-3' />
+              <p className='capitalize ml-6 font-light'>{data.predictions}.</p>
+            </span>
+          }
         </Tabs.Tab>
       </Tabs>
     </div>

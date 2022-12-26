@@ -38,4 +38,4 @@ def fill_mask():
 def question_answering():
   data = request.json
   answer = answer_question(data['context'], data['question'])
-  return jsonify({'answer': answer})
+  return jsonify({'prediction': answer})

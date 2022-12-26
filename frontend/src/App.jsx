@@ -10,8 +10,8 @@ function App() {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    console.log(loading);
-  }, [loading])
+    setData(null)
+  }, [activeTab])
   
   const entityToHTML = (word, entity) => {
     switch (entity) {
@@ -179,7 +179,7 @@ function App() {
               <p className='ml-6'>Results</p>
               <hr className='border-t-2 border-[#7370DA]/10 my-3' />
               <span className='flex flex-wrap w-full space-x-1.5 ml-6 font-light'>
-                {document.getElementById('token-class').value.split(' ').map((word, idx) => (
+                {data && document.getElementById('token-class').value.split(' ').map((word, idx) => (
                   entityToHTML(word, data.predictions[idx].entity)
                 ))}
               </span>
@@ -207,17 +207,17 @@ function App() {
               <p className='ml-6'>Results</p>
               <hr className='border-t-2 border-[#7370DA]/10 my-3' />
               <span className='flex flex-wrap items-center w-full space-x-1.5 ml-6 font-light'>
-                {document.getElementById('fill-mask').value.split(' ').map((word) => (
+                {data && document.getElementById('fill-mask').value.split(' ').map((word) => (
                   word !== '[MASK]' ? <p>{word}</p> : <p className='bg-green-300 px-2 py-1 rounded-lg'>{data.predictions[0]}</p>
                 ))}
               </span>
               <span className='flex flex-wrap items-center w-full space-x-1.5 ml-6 font-light my-2'>
-                {document.getElementById('fill-mask').value.split(' ').map((word) => (
+                {data && document.getElementById('fill-mask').value.split(' ').map((word) => (
                   word !== '[MASK]' ? <p>{word}</p> : <p className='bg-blue-300 px-2 py-1 rounded-lg'>{data.predictions[1]}</p>
                 ))}
               </span>
               <span className='flex flex-wrap items-center w-full space-x-1.5 ml-6 font-light'>
-                {document.getElementById('fill-mask').value.split(' ').map((word) => (
+                {data && document.getElementById('fill-mask').value.split(' ').map((word) => (
                   word !== '[MASK]' ? <p>{word}</p> : <p className='bg-orange-300 px-2 py-1 rounded-lg'>{data.predictions[2]}</p>
                 ))}
               </span>
@@ -246,7 +246,7 @@ function App() {
             <span className='mt-6'>
               <p className='ml-6'>Results</p>
               <hr className='border-t-2 border-[#7370DA]/10 my-3' />
-              <p className='capitalize ml-6 font-light'>{data.predictions}.</p>
+              <p className='capitalize ml-6 font-light'>{data && data.predictions}.</p>
             </span>
           }
         </Tabs.Tab>

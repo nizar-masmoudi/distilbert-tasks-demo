@@ -23,4 +23,5 @@ frontend/yarn-debug.log*
 frontend/yarn-error.log*
 
 # pycache
-**/__pycache__
+backend/__pycache__
+backend/tasks/__pycache__
